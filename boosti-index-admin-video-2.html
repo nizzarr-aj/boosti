@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOOSTI — SMM PANEL</title>
+<meta name="description" content="BOOSTI — منصة خدمات السوشيال ميديا">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--p:#6d35ff;--b:#1687ff;--ink:#11152f;--muted:#6f7692;--bg:#f6f7fc;--card:#fff;--line:#e7e9f2;--ok:#16a36a;--warn:#c77a00;--danger:#c43d52}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+.nav{position:sticky;top:0;z-index:50;background:#ffffffed;backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.navin{max-width:1180px;margin:auto;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px}.logo{font-size:26px;font-weight:1000;letter-spacing:-1px}.logo span{color:var(--p)}.links{display:flex;gap:22px;font-size:14px;color:#39405f}.links a:hover{color:var(--p)}
+.btn{border:0;border-radius:14px;padding:12px 18px;font-weight:900;background:linear-gradient(135deg,var(--p),var(--b));color:#fff;box-shadow:0 10px 25px #6435ff26}.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}.btn.danger{background:#fff;color:var(--danger);border:1px solid #f0cbd3;box-shadow:none}.btn:disabled{opacity:.55;cursor:not-allowed}
+.hero{max-width:1180px;margin:auto;padding:72px 20px 45px;display:grid;grid-template-columns:1.05fr .95fr;gap:42px;align-items:center}.badge{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:99px;background:#eee9ff;color:#5c25e8;font-weight:900;font-size:13px}.badge i{width:8px;height:8px;border-radius:50%;background:#20c87a;display:inline-block}h1{font-size:clamp(42px,6vw,72px);line-height:1.03;margin:18px 0;letter-spacing:-3px}h1 span{background:linear-gradient(90deg,var(--p),var(--b));color:transparent;background-clip:text}.hero p{font-size:18px;line-height:1.9;color:var(--muted);max-width:650px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}
+.mock{border:1px solid #e1e3f0;border-radius:32px;padding:20px;background:linear-gradient(145deg,#fff,#eeeaff);box-shadow:0 30px 80px #25264b16}.mocktop{display:flex;justify-content:space-between;margin-bottom:16px}.online{color:var(--ok);font-weight:800}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px}.stat b{font-size:28px}.stat small{display:block;color:var(--muted);margin-top:5px}.phone{margin-top:12px;background:#121638;border-radius:26px;padding:9px}.screen{background:#fff;border-radius:19px;padding:15px}.grad{background:linear-gradient(135deg,#6d35ff,#1687ff);color:#fff;border-radius:17px;padding:22px}.grad h3{margin:0 0 7px}.icons{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.icon{background:#f5f6fb;border-radius:13px;text-align:center;padding:12px 4px;font-size:12px}
+.section{max-width:1180px;margin:auto;padding:65px 20px}.center{text-align:center}.center h2{font-size:38px;margin:9px 0}.center p{color:var(--muted);line-height:1.8}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-top:28px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:23px;box-shadow:0 12px 35px #17182d08}.ico{width:48px;height:48px;border-radius:15px;background:#eee9ff;color:var(--p);display:grid;place-items:center;font-size:22px}.card h3{margin:13px 0 7px}.card p{color:var(--muted);line-height:1.75}.cta{background:linear-gradient(135deg,#151a4b,#5e25e8);color:#fff;border-radius:30px;padding:45px;text-align:center}.cta p{color:#dfe2ff}
+.footer{padding:30px 20px;text-align:center;color:#7b819a;font-size:13px}.hidden{display:none!important}
+.dashboard{max-width:1180px;margin:auto;padding:35px 20px 60px}.dashhead{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.dashhead h2{margin:8px 0}.userchip{background:#fff;border:1px solid var(--line);padding:10px 13px;border-radius:14px;font-weight:800}.dashnav{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0}.pill{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;font-weight:800}.pill.active{background:#eee9ff;border-color:#cfc0ff;color:#5b20e5}.tab{display:none}.tab.activeTab{display:block}.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px}.form{display:grid;gap:12px;max-width:650px}.form input,.form select{width:100%;padding:14px;border:1px solid #dfe2ed;border-radius:12px;background:#fff;outline:none}.form input:focus,.form select:focus{border-color:#a998ff;box-shadow:0 0 0 3px #6d35ff12}.notice{padding:13px 15px;border-radius:13px;background:#f1efff;color:#5421d8;line-height:1.7}.notice.ok{background:#e9faf3;color:#11784e}.notice.warn{background:#fff5df;color:#966000}.notice.danger{background:#fff0f2;color:#a02f43}.split{display:grid;grid-template-columns:1fr 1fr;gap:17px}.list{display:grid;gap:10px;margin-top:14px}.row{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}.rowtop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.status{font-size:12px;font-weight:900;padding:6px 9px;border-radius:99px;background:#fff5df;color:#966000}.status.ok{background:#e9faf3;color:#11784e}.muted{color:var(--muted)}.money{font-size:34px;font-weight:1000;margin:8px 0}.paymentbox{border:1px solid #ddd7ff;background:linear-gradient(145deg,#fff,#f4f1ff);border-radius:22px;padding:22px}.number{font-size:30px;font-weight:1000;direction:ltr;letter-spacing:1px;margin:10px 0}.mini{font-size:12px;color:var(--muted)}
+.authbox{max-width:520px;margin:0 auto}.authswitch{display:flex;gap:8px;margin-bottom:18px}.authswitch button{flex:1}.pricebox{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border:1px solid #e2def7;border-radius:14px;background:#faf9ff}.price{font-size:20px;font-weight:1000;color:var(--p)}.servicehint{font-size:12px;color:var(--muted)}.admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.admin-stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}.admin-stat b{display:block;font-size:25px;margin-top:5px}.admin-actions{display:flex;gap:7px;flex-wrap:wrap}.admin-actions .btn{padding:8px 11px;font-size:12px}.btn.small{padding:8px 11px;font-size:12px}.admin-table{width:100%;border-collapse:collapse;font-size:13px}.admin-table th,.admin-table td{padding:10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}.admin-table th{color:var(--muted)}.admin-scroll{overflow:auto}.admin-order-cards{display:none}.admin-order-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff;margin-bottom:10px}.admin-order-card .oc-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.admin-order-card .oc-meta{margin:8px 0;color:var(--muted);font-size:13px}.admin-order-card .oc-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.admin-order-card select{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}@media(max-width:700px){.admin-grid{grid-template-columns:1fr 1fr}.admin-table{min-width:760px}.admin-order-table-wrap{display:none}.admin-order-cards{display:block}}
+@media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:45px}.cards{grid-template-columns:1fr 1fr}.links{display:none}.split{grid-template-columns:1fr}.mock{order:-1}}
+@media(max-width:560px){.cards{grid-template-columns:1fr}.section{padding:45px 18px}.hero{padding-left:18px;padding-right:18px}.cta{padding:30px 20px}h1{letter-spacing:-2px}.navin{padding:12px 15px}.nav .btn{padding:10px 12px}.number{font-size:25px}.panel{padding:18px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="navin">
+    <div class="logo">BOOSTI</div>
+    <div class="links">
+      <a href="#services">الخدمات</a><a href="#how">كيفاش يخدم؟</a><a href="#payment">الدفع</a><a href="#contact">تواصل</a>
+    </div>
+    <button class="btn" onclick="openDashboard()">لوحة التحكم</button>
+  </div>
+</nav>
+
+<main id="home">
+<section class="hero">
+  <div>
+    <span class="badge"><i></i> SMM PANEL • BOOSTI</span>
+    <h1>كبّر حضورك<br><span>على السوشيال ميديا</span></h1>
+    <p>منصة BOOSTI لتنظيم خدمات TikTok وInstagram وYouTube وFacebook، مع حساب حقيقي، محفظة، طلبات، وشحن رصيد.</p>
+    <div class="actions"><button class="btn" onclick="openDashboard()">ابدأ الآن</button><a class="btn secondary" href="#services">شوف الخدمات</a></div>
+  </div>
+  <div class="mock">
+    <div class="mocktop"><b>BOOSTI PANEL</b><span class="online">● Online</span></div>
+    <div class="grid2"><div class="stat"><b>+200</b><small>خدمة متوفرة</small></div><div class="stat"><b>+12K</b><small>طلبات معالجة</small></div></div>
+    <div class="phone"><div class="screen"><div class="grad"><h3>Boost your presence</h3><div>سريع • واضح • سهل</div></div>
+      <div class="icons"><div class="icon">🎵<br>TikTok</div><div class="icon">◎<br>Instagram</div><div class="icon">▶️<br>YouTube</div><div class="icon">f<br>Facebook</div></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="services" class="section"><div class="center"><h2>الخدمات</h2><p>الخدمات والأسعار تتقرى مباشرة من قاعدة بيانات BOOSTI.</p></div>
+  <div class="cards">
+    <div class="card"><div class="ico">🎵</div><h3>TikTok</h3><p>مشاهدات وإعجابات وخدمات أخرى حسب المتوفر.</p></div>
+    <div class="card"><div class="ico">◎</div><h3>Instagram</h3><p>طلبات Instagram من لوحة واحدة.</p></div>
+    <div class="card"><div class="ico">▶</div><h3>YouTube</h3><p>خدمات للفيديوهات والقنوات.</p></div>
+    <div class="card"><div class="ico">f</div><h3>Facebook</h3><p>خدمات الصفحات والمنشورات.</p></div>
+    <div class="card"><div class="ico">💬</div><h3>WhatsApp</h3><p>قسم قابل للتوسعة حسب الباقات.</p></div>
+    <div class="card"><div class="ico">＋</div><h3>خدمات جديدة</h3><p>تنجم تزيد خدمات أخرى من Supabase.</p></div>
+  </div>
+</section>
+
+<section id="how" class="section"><div class="center"><h2>كيفاش يخدم؟</h2><p>المسار الأساسي للعميل.</p></div>
+  <div class="cards">
+    <div class="card"><div class="ico">1</div><h3>حساب</h3><p>أنشئ حسابك وسجّل الدخول.</p></div>
+    <div class="card"><div class="ico">2</div><h3>شحن</h3><p>حوّل عبر D17 وسجّل العملية للمراجعة.</p></div>
+    <div class="card"><div class="ico">3</div><h3>طلب</h3><p>اختار الخدمة وأرسل الطلب وتابع حالته.</p></div>
+  </div>
+</section>
+
+<section id="payment" class="section"><div class="cta"><h2>شحن الرصيد بـ D17 💳</h2><p>رقم D17: <b dir="ltr">25 723 544</b></p><button class="btn" onclick="openDashboard('paymentTab')">فتح الشحن</button></div></section>
+<section id="contact" class="section"><div class="cta"><h2>BOOSTI 🚀</h2><p>الحسابات والطلبات والإيداعات مربوطة بقاعدة البيانات.</p><button class="btn" onclick="openDashboard()">فتح لوحة التحكم</button></div></section>
+</main>
+
+<section id="dashboard" class="dashboard hidden">
+  <div class="dashhead">
+    <div><span class="badge">CLIENT PANEL</span><h2>لوحة التحكم</h2><div class="muted" id="dashSub">سجّل الدخول باش تستعمل حسابك.</div></div>
+    <div class="userchip" id="userChip">زائر</div>
+  </div>
+
+  <div id="authPanel" class="panel authbox" style="margin-top:22px">
+    <div class="authswitch"><button class="pill active" id="loginModeBtn" onclick="setAuthMode('login')">دخول</button><button class="pill" id="signupModeBtn" onclick="setAuthMode('signup')">حساب جديد</button></div>
+    <form class="form" onsubmit="handleAuth(event)">
+      <input id="authEmail" type="email" placeholder="البريد الإلكتروني" required>
+      <input id="authPassword" type="password" minlength="6" placeholder="كلمة السر (6 أحرف على الأقل)" required>
+      <input id="authUsername" class="hidden" placeholder="اسم المستخدم">
+      <button class="btn" id="authSubmit" type="submit">دخول</button>
+    </form>
+    <div id="authMsg" class="notice hidden" style="margin-top:14px"></div>
+  </div>
+
+  <div id="clientPanel" class="hidden">
+    <div class="dashnav">
+      <button class="pill active" onclick="showTab('new',this)">طلب جديد</button>
+      <button class="pill" onclick="showTab('orders',this)">طلباتي</button>
+      <button class="pill" onclick="showTab('wallet',this)">المحفظة</button>
+      <button class="pill" onclick="showTab('paymentTab',this)">شحن D17</button>
+      <button class="pill" onclick="showTab('account',this)">الحساب</button><button id="adminPill" class="pill hidden" onclick="showTab('admin',this)">⚙️ الإدارة</button>
+      <button class="pill" onclick="goHome()">الرئيسية</button>
+    </div>
+
+    <div id="new" class="panel tab activeTab">
+      <div id="orderNotice" class="notice hidden" style="margin-bottom:15px"></div>
+      <div class="form">
+        <select id="service"></select>
+        <div class="servicehint" id="serviceHint">اختار الخدمة باش تظهرلك السعر.</div>
+        <input id="link" placeholder="رابط المنشور أو الحساب">
+        <input id="qty" type="number" min="100" placeholder="الكمية" oninput="updatePrice()">
+        <div class="pricebox"><span>السعر التقريبي</span><span class="price" id="orderPrice">0.000 د.ت</span></div>
+        <button class="btn" id="orderBtn" onclick="submitOrder()">إرسال الطلب</button>
+      </div>
+    </div>
+
+    <div id="orders" class="panel tab">
+      <h3>طلباتي</h3><div id="orderList" class="list"></div>
+    </div>
+
+    <div id="wallet" class="panel tab">
+      <div class="split">
+        <div class="paymentbox"><div class="muted">الرصيد المتاح</div><div class="money" id="balance">0.000 د.ت</div><button class="btn" onclick="showTab('paymentTab',document.querySelectorAll('.pill')[3])">شحن الرصيد</button></div>
+        <div><h3>آخر عمليات الشحن</h3><div id="depositList" class="list"></div></div>
+      </div>
+    </div>
+
+    <div id="paymentTab" class="panel tab">
+      <div class="paymentbox"><span class="badge">D17</span><h3>شحن الرصيد</h3><p class="muted">حوّل المبلغ إلى رقم D17 ثم سجّل العملية. الرصيد يتحدّث بعد مراجعة الإيداع.</p><div class="number">25 723 544</div><button class="btn" onclick="copyD17()">نسخ رقم D17</button></div>
+      <div style="height:16px"></div>
+      <form class="form" onsubmit="submitDeposit(event)">
+        <input id="depAmount" type="number" min="1" step="0.001" placeholder="المبلغ بالدينار التونسي" required>
+        <input id="depPhone" inputmode="numeric" placeholder="رقم الهاتف المستعمل في D17" required>
+        <input id="depRef" placeholder="مرجع / رقم العملية D17" required>
+        <button class="btn" type="submit">تسجيل عملية الشحن</button>
+      </form>
+      <div id="depositStatus" class="notice hidden" style="margin-top:14px"></div>
+    </div>
+
+    <div id="admin" class="panel tab">
+      <div class="rowtop"><div><h3 style="margin:0">لوحة الإدارة ⚙️</h3><div class="mini">لإدارة الإيداعات والطلبات من نفس BOOSTI.</div></div><button class="btn secondary small" onclick="loadAdmin()">تحديث</button></div>
+      <div id="adminNotice" class="notice hidden" style="margin-top:14px"></div>
+      <div class="admin-grid" style="margin-top:18px">
+        <div class="admin-stat"><span class="muted">المستخدمين</span><b id="aUsers">0</b></div>
+        <div class="admin-stat"><span class="muted">كل الطلبات</span><b id="aOrders">0</b></div>
+        <div class="admin-stat"><span class="muted">طلبات معلّقة</span><b id="aPendingOrders">0</b></div>
+        <div class="admin-stat"><span class="muted">إيداعات معلّقة</span><b id="aPendingDeposits">0</b></div>
+      </div>
+      <h3>إيداعات D17</h3>
+      <div class="admin-scroll"><table class="admin-table"><thead><tr><th>#</th><th>العميل</th><th>المبلغ</th><th>الهاتف</th><th>المرجع</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="adminDepositsBody"></tbody></table></div>
+      <div style="height:24px"></div>
+      <h3>الطلبات</h3>
+      <div class="admin-scroll admin-order-table-wrap"><table class="admin-table"><thead><tr><th>#</th><th>العميل</th><th>الخدمة</th><th>الكمية</th><th>المبلغ</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="adminOrdersBody"></tbody></table></div><div id="adminOrderCards" class="admin-order-cards"></div>
+    </div>
+
+    <div id="account" class="panel tab">
+      <h3>الحساب</h3><p class="muted" id="accountEmail">—</p>
+      <button class="btn danger" onclick="signOut()">تسجيل الخروج</button>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">© 2026 BOOSTI — SMM PANEL</footer>
+
+<script>
+const SUPABASE_URL = 'https://trfjtzthidqwczfvusze.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_a1c7hAylPNaNimx00fTqyg_G53xydZu';
+const D17_NUMBER = '25 723 544';
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const $ = id => document.getElementById(id);
+let authMode = 'login';
+let currentUser = null;
+let services = [];
+
+function esc(v){return String(v ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function money(v){return Number(v||0).toFixed(3)+' د.ت'}
+function showMsg(id,text,type=''){const el=$(id);el.className='notice '+(type?' '+type:'');el.innerHTML=text;el.classList.remove('hidden')}
+function hideMsg(id){$(id).classList.add('hidden')}
+
+function openDashboard(tab='new'){
+  $('home').classList.add('hidden');$('dashboard').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(currentUser && tab && $(tab)){const btn=[...document.querySelectorAll('.pill')].find(b=>b.getAttribute('onclick')?.includes("'"+tab+"'"));showTab(tab,btn)}
+}
+function goHome(){$('dashboard').classList.add('hidden');$('home').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
+function showTab(id,btn){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('activeTab'));
+  if($(id))$(id).classList.add('activeTab');
+  document.querySelectorAll('#clientPanel .pill').forEach(x=>x.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(id==='orders')loadOrders();
+  if(id==='wallet')loadWallet();
+  if(id==='paymentTab')loadDeposits();
+}
+function setAuthMode(mode){
+  authMode=mode;
+  $('loginModeBtn').classList.toggle('active',mode==='login');
+  $('signupModeBtn').classList.toggle('active',mode==='signup');
+  $('authUsername').classList.toggle('hidden',mode==='login');
+  $('authSubmit').textContent=mode==='login'?'دخول':'إنشاء الحساب';
+  hideMsg('authMsg');
+}
+async function handleAuth(e){
+  e.preventDefault();hideMsg('authMsg');
+  const email=$('authEmail').value.trim(),password=$('authPassword').value,username=$('authUsername').value.trim();
+  $('authSubmit').disabled=true;
+  try{
+    if(authMode==='signup'){
+      const {data,error}=await db.auth.signUp({email,password,options:{data:{username:username||email.split('@')[0]}}});
+      if(error)throw error;
+      if(data.session)showMsg('authMsg','✅ تم إنشاء الحساب وتسجيل الدخول.','ok');
+      else showMsg('authMsg','✅ الحساب تخلق. إذا طلب منك تأكيد البريد، أكّد البريد ثم ارجع للموقع.','ok');
+    }else{
+      const {error}=await db.auth.signInWithPassword({email,password});if(error)throw error;
+      showMsg('authMsg','✅ تم تسجيل الدخول.','ok');
+    }
+  }catch(err){showMsg('authMsg','❌ '+esc(err.message||'صار خطأ'),'danger')}
+  finally{$('authSubmit').disabled=false}
+}
+async function signOut(){await db.auth.signOut();setUser(null)}
+function setUser(user){
+  currentUser=user||null;
+  const logged=!!user;
+  $('authPanel').classList.toggle('hidden',logged);
+  $('clientPanel').classList.toggle('hidden',!logged);
+  $('userChip').textContent=logged?(user.user_metadata?.username||user.email?.split('@')[0]||'عضو'):'زائر';
+  $('dashSub').textContent=logged?'حسابك مربوط بـ BOOSTI وSupabase.':'سجّل الدخول باش تستعمل حسابك.';
+  $('accountEmail').textContent=logged?user.email:'—';
+  if(logged){loadServices();loadProfile();loadOrders();loadDeposits();isAdmin().then(ok=>{ $('adminPill').classList.toggle('hidden',!ok); if(ok) loadAdmin(); });}else{$('adminPill').classList.add('hidden')}
+}
+
+async function loadServices(){
+  const {data,error}=await db.from('services').select('id,name,platform,price_per_1000,min_quantity,max_quantity,active').eq('active',true).order('id');
+  if(error){showMsg('orderNotice','❌ ما نجمتش نجيب الخدمات: '+esc(error.message),'danger');return}
+  services=data||[];
+  $('service').innerHTML=services.length?services.map(s=>`<option value="${s.id}">${esc(s.platform)} — ${esc(s.name)} — ${money(s.price_per_1000)}/1000</option>`).join(''):'<option value="">ما فماش خدمات</option>';
+  updatePrice();
+}
+function selectedService(){return services.find(s=>String(s.id)===String($('service').value))}
+function updatePrice(){
+  const s=selectedService(),q=Number($('qty').value||0);
+  if(!s){$('orderPrice').textContent='0.000 د.ت';$('serviceHint').textContent='ما فماش خدمات متاحة.';return}
+  $('qty').min=s.min_quantity;$('qty').max=s.max_quantity;
+  $('serviceHint').textContent=`الحد الأدنى: ${s.min_quantity.toLocaleString()} — الحد الأقصى: ${s.max_quantity.toLocaleString()}`;
+  $('orderPrice').textContent=money(q>0?(q/1000)*Number(s.price_per_1000):0);
+}
+$('service').addEventListener('change',updatePrice);
+
+async function loadProfile(){
+  if(!currentUser)return;
+  const {data,error}=await db.from('profiles').select('balance,username,full_name').eq('id',currentUser.id).maybeSingle();
+  if(!error && data){$('balance').textContent=money(data.balance);if(data.username)$('userChip').textContent=data.username}
+}
+async function submitOrder(){
+  if(!currentUser){openDashboard();return}
+  hideMsg('orderNotice');
+  const s=selectedService(),link=$('link').value.trim(),qty=Number($('qty').value);
+  if(!s)return showMsg('orderNotice','❌ اختار خدمة.','danger');
+  if(!link)return showMsg('orderNotice','❌ حط الرابط.','danger');
+  if(!Number.isInteger(qty)||qty<s.min_quantity||qty>s.max_quantity)return showMsg('orderNotice',`❌ الكمية لازم تكون بين ${s.min_quantity.toLocaleString()} و ${s.max_quantity.toLocaleString()}.`,'danger');
+  const price=(qty/1000)*Number(s.price_per_1000);
+  $('orderBtn').disabled=true;
+  try{
+    const {error}=await db.from('orders').insert({user_id:currentUser.id,service_id:s.id,service_name:s.platform+' — '+s.name,link,quantity:qty,price,status:'pending'});
+    if(error)throw error;
+    showMsg('orderNotice',`✅ تم تسجيل الطلب بقيمة <b>${money(price)}</b>. الحالة: قيد المراجعة.`,'ok');
+    $('link').value='';$('qty').value='';updatePrice();loadOrders();
+  }catch(err){showMsg('orderNotice','❌ '+esc(err.message||'تعذر تسجيل الطلب'),'danger')}
+  finally{$('orderBtn').disabled=false}
+}
+async function loadOrders(){
+  if(!currentUser)return;
+  const {data,error}=await db.from('orders').select('id,service_name,link,quantity,price,status,created_at').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(50);
+  if(error){$('orderList').innerHTML='<div class="notice danger">تعذر جلب الطلبات.</div>';return}
+  $('orderList').innerHTML=data?.length?data.map(x=>`<div class="row"><div class="rowtop"><b>#${x.id}</b><span class="status">${esc(statusAr(x.status))}</span></div><div><b>${esc(x.service_name)}</b> — ${Number(x.quantity).toLocaleString()}</div><div>${money(x.price)}</div><div class="mini">${esc(x.link)} • ${new Date(x.created_at).toLocaleString('ar-TN')}</div></div>`).join(''):'<div class="notice">ما فماش طلبات إلى الآن.</div>';
+}
+function safeUrl(v){try{const u=new URL(String(v||''));return ['http:','https:'].includes(u.protocol)?u.href:'#'}catch(e){return '#'}}
+function statusAr(s){return ({pending:'قيد المراجعة',processing:'جاري التنفيذ',completed:'مكتمل',cancelled:'ملغى',refunded:'مسترجع'})[s]||s||'قيد المراجعة'}
+
+async function submitDeposit(e){
+  e.preventDefault();if(!currentUser)return;
+  hideMsg('depositStatus');
+  const amount=Number($('depAmount').value),phone=$('depPhone').value.trim(),ref=$('depRef').value.trim();
+  if(!amount||amount<=0||!phone||!ref)return;
+  try{
+    const {data,error}=await db.from('deposits').insert({user_id:currentUser.id,amount,method:'D17',phone,transaction_code:ref,status:'pending'}).select().single();
+    if(error)throw error;
+    showMsg('depositStatus',`✅ تم تسجيل العملية <b>#${data.id}</b> بمبلغ <b>${money(amount)}</b>. الحالة: <b>قيد المراجعة</b>.`,'ok');
+    e.target.reset();loadDeposits();
+  }catch(err){showMsg('depositStatus','❌ '+esc(err.message||'تعذر تسجيل الإيداع'),'danger')}
+}
+async function loadDeposits(){
+  if(!currentUser)return;
+  const {data,error}=await db.from('deposits').select('id,amount,method,transaction_code,status,created_at').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(50);
+  if(error){$('depositList').innerHTML='<div class="notice danger">تعذر جلب عمليات الشحن.</div>';return}
+  $('depositList').innerHTML=data?.length?data.map(x=>`<div class="row"><div class="rowtop"><b>#${x.id}</b><span class="status">${esc(statusAr(x.status))}</span></div><div>${money(x.amount)} • ${esc(x.method)}</div><div class="mini">مرجع: ${esc(x.transaction_code||'—')} • ${new Date(x.created_at).toLocaleString('ar-TN')}</div></div>`).join(''):'<div class="notice">ما فماش عمليات شحن.</div>';
+}
+async function isAdmin(){
+  if(!currentUser)return false;
+  const {data,error}=await db.rpc('is_admin');
+  return !error && data===true;
+}
+async function loadAdmin(){
+  if(!currentUser)return;
+  const ok=await isAdmin();
+  if(!ok){showMsg('adminNotice','❌ هذا الحساب موش Admin.','danger');return}
+  $('adminPill').classList.remove('hidden');
+  try{
+    const dash=await db.rpc('admin_dashboard'); if(dash.error)throw dash.error;
+    const d=dash.data||{};
+    $('aUsers').textContent=d.users??0;$('aOrders').textContent=d.orders??0;$('aPendingOrders').textContent=d.pending_orders??0;$('aPendingDeposits').textContent=d.pending_deposits??0;
+    const deps=await db.rpc('admin_deposits'); if(deps.error)throw deps.error;
+    $('adminDepositsBody').innerHTML=(deps.data||[]).map(x=>`<tr><td>#${x.id}</td><td>${esc(x.username||x.email||'—')}<br><span class="mini">${esc(x.email||'')}</span></td><td><b>${money(x.amount)}</b></td><td dir="ltr">${esc(x.phone||'—')}</td><td>${esc(x.transaction_code||'—')}</td><td><span class="status">${esc(statusAr(x.status))}</span></td><td>${x.status==='pending'?`<div class="admin-actions"><button class="btn small" onclick="reviewDeposit(${x.id},'approved')">موافقة</button><button class="btn danger small" onclick="reviewDeposit(${x.id},'rejected')">رفض</button></div>`:'—'}</td></tr>`).join('')||'<tr><td colspan="7">ما فماش إيداعات.</td></tr>';
+    const ord=await db.rpc('admin_orders'); if(ord.error)throw ord.error;
+    const orders=ord.data||[]; $('adminOrdersBody').innerHTML=orders.map(x=>`<tr><td>#${x.id}</td><td>${esc(x.username||x.email||'—')}<br><span class="mini">${esc(x.email||'')}</span></td><td>${esc(x.service_name)}</td><td>${Number(x.quantity).toLocaleString()}</td><td>${money(x.price)}</td><td><span class="status">${esc(statusAr(x.status))}</span></td><td><div class="admin-actions"><a class="btn secondary small" href="${safeUrl(x.link)}" target="_blank" rel="noopener noreferrer">فتح الفيديو 🔗</a><select onchange="updateAdminOrder(${x.id},this.value)"><option value="pending" ${x.status==='pending'?'selected':''}>قيد المراجعة</option><option value="processing" ${x.status==='processing'?'selected':''}>جاري التنفيذ</option><option value="completed" ${x.status==='completed'?'selected':''}>مكتمل</option><option value="cancelled" ${x.status==='cancelled'?'selected':''}>ملغى</option><option value="refunded" ${x.status==='refunded'?'selected':''}>مسترجع</option></select></div></td></tr>`).join('')||'<tr><td colspan="7">ما فماش طلبات.</td></tr>'; $('adminOrderCards').innerHTML=orders.map(x=>`<div class="admin-order-card"><div class="oc-top"><b>#${x.id}</b><span class="status">${esc(statusAr(x.status))}</span></div><div style="margin-top:8px"><b>${esc(x.service_name)}</b></div><div class="oc-meta">العميل: ${esc(x.username||x.email||'—')}<br>الكمية: ${Number(x.quantity).toLocaleString()} — المبلغ: ${money(x.price)}</div><div class="oc-actions"><a class="btn secondary small" href="${safeUrl(x.link)}" target="_blank" rel="noopener noreferrer">فتح الفيديو 🔗</a><select onchange="updateAdminOrder(${x.id},this.value)"><option value="pending" ${x.status==='pending'?'selected':''}>قيد المراجعة</option><option value="processing" ${x.status==='processing'?'selected':''}>جاري التنفيذ</option><option value="completed" ${x.status==='completed'?'selected':''}>مكتمل</option><option value="cancelled" ${x.status==='cancelled'?'selected':''}>ملغى</option><option value="refunded" ${x.status==='refunded'?'selected':''}>مسترجع</option></select></div></div>`).join('')||'<div class="notice">ما فماش طلبات.</div>';
+    hideMsg('adminNotice');
+  }catch(err){showMsg('adminNotice','❌ '+esc(err.message||'تعذر تحميل لوحة الإدارة'),'danger')}
+}
+async function reviewDeposit(id,decision){
+  const label=decision==='approved'?'الموافقة':'الرفض';
+  if(!confirm('تأكيد '+label+' على الإيداع #'+id+'؟'))return;
+  const {data,error}=await db.rpc('admin_review_deposit',{p_deposit_id:id,p_decision:decision});
+  if(error){showMsg('adminNotice','❌ '+esc(error.message||'تعذر مراجعة الإيداع'),'danger');return}
+  showMsg('adminNotice',decision==='approved'?'✅ تمت الموافقة على الإيداع وزاد الرصيد للمستخدم.':'✅ تم رفض الإيداع.','ok');
+  await loadAdmin();
+}
+async function updateAdminOrder(id,status){
+  const {error}=await db.rpc('admin_update_order',{p_order_id:id,p_status:status});
+  if(error){showMsg('adminNotice','❌ '+esc(error.message||'تعذر تحديث الطلب'),'danger');return}
+  showMsg('adminNotice','✅ تم تحديث حالة الطلب #'+id+'.','ok');
+  await loadAdmin();
+}
+async function copyD17(){try{await navigator.clipboard.writeText(D17_NUMBER)}catch(e){}alert('تم نسخ رقم D17: '+D17_NUMBER)}
+
+db.auth.onAuthStateChange((_event,session)=>{setUser(session?.user||null)});
+(async()=>{const {data}=await db.auth.getSession();setUser(data.session?.user||null)})();
+</script>
+</body>
+</html>
