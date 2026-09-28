@@ -74,7 +74,7 @@ body{background:radial-gradient(circle at 15% 5%,rgba(139,92,246,.20),transparen
   <div>
     <span class="badge"><i></i> BOOSTI • SOCIAL GROWTH</span>
     <h1>كبّر حضورك<br><span>بشكل احترافي</span></h1>
-    <p>منصة BOOSTI لتنظيم خدمات TikTok وInstagram وYouTube وFacebook، مع حساب حقيقي، محفظة، طلبات، وشحن رصيد.</p>
+    <p>منصة BOOSTI لخدمة TikTok Boost وتنظيم الطلبات، مع حساب حقيقي، محفظة، طلبات، وشحن رصيد.</p>
     <div class="actions"><button class="btn" onclick="openDashboard()">ابدأ الآن</button><a class="btn secondary" href="#services">شوف الخدمات</a></div>
   </div>
   <div class="mock">
@@ -88,7 +88,7 @@ body{background:radial-gradient(circle at 15% 5%,rgba(139,92,246,.20),transparen
 
 <section id="services" class="section"><div class="center"><h2>الخدمات</h2><p>الخدمات والأسعار تتقرى مباشرة من قاعدة بيانات BOOSTI.</p></div>
   <div class="cards">
-    <div class="card"><div class="ico">🎵</div><h3>TikTok</h3><p>مشاهدات وإعجابات وخدمات أخرى حسب المتوفر.</p></div>
+    <div class="card"><div class="ico">🎵</div><h3>TikTok Boost</h3><p>تعزيز فيديوهات TikTok حسب الخدمة والكمية المتاحة.</p></div>
     <div class="card"><div class="ico">◎</div><h3>Instagram</h3><p>طلبات Instagram من لوحة واحدة.</p></div>
     <div class="card"><div class="ico">▶</div><h3>YouTube</h3><p>خدمات للفيديوهات والقنوات.</p></div>
     <div class="card"><div class="ico">f</div><h3>Facebook</h3><p>خدمات الصفحات والمنشورات.</p></div>
@@ -141,8 +141,8 @@ body{background:radial-gradient(circle at 15% 5%,rgba(139,92,246,.20),transparen
       <div class="form">
         <select id="service"></select>
         <div class="servicehint" id="serviceHint">اختار الخدمة باش تظهرلك السعر.</div>
-        <input id="link" placeholder="رابط المنشور أو الحساب">
-        <input id="qty" type="number" min="100" placeholder="عدد المشاهدات / اللايكات / المتابعين" oninput="updatePrice()">
+        <input id="link" placeholder="رابط فيديو TikTok">
+        <input id="qty" type="number" min="100" placeholder="الكمية المطلوبة" oninput="updatePrice()">
         <div class="pricebox"><span>السعر التقريبي</span><span class="price" id="orderPrice">0.000 د.ت</span></div>
         <button class="btn" id="orderBtn" onclick="submitOrder()">إرسال الطلب</button>
       </div>
@@ -268,7 +268,17 @@ async function loadServices(){
   const {data,error}=await db.from('services').select('id,name,platform,price_per_1000,min_quantity,max_quantity,active').eq('active',true).order('id');
   if(error){showMsg('orderNotice','❌ ما نجمتش نجيب الخدمات: '+esc(error.message),'danger');return}
   services=data||[];
-  $('service').innerHTML=services.length?services.map(s=>`<option value="${s.id}">${esc(s.platform)} — ${esc(s.name)} — ${money(s.price_per_1000)}/1000</option>`).join(''):'<option value="">ما فماش خدمات</option>';
+  $('service').innerHTML=services.length?services.map(s=>{
+    const isTikTok=String(s.platform).toLowerCase().includes('tiktok') || String(s.platform).includes('تيك');
+    let displayName=String(s.name);
+    if(isTikTok){
+      if(/like|لايك/i.test(displayName)) displayName='TikTok Boost — لايكات';
+      else if(/follow|متابع/i.test(displayName)) displayName='TikTok Boost — متابعين';
+      else if(/visit|profile|زيارة|بروفايل/i.test(displayName)) displayName='TikTok Boost — زيارات البروفايل';
+      else displayName='TikTok Boost — مشاهدات';
+    }
+    return `<option value="${s.id}">${esc(isTikTok?displayName:(s.platform+' — '+s.name))} — ${money(s.price_per_1000)}/1000</option>`;
+  }).join(''):'<option value="">ما فماش خدمات</option>';
   updatePrice();
 }
 function selectedService(){return services.find(s=>String(s.id)===String($('service').value))}
@@ -296,9 +306,13 @@ async function submitOrder(){
   if(!link)return showMsg('orderNotice','❌ حط الرابط.','danger');
   if(!Number.isInteger(qty)||qty<s.min_quantity||qty>s.max_quantity)return showMsg('orderNotice',`❌ الكمية لازم تكون بين ${s.min_quantity.toLocaleString()} و ${s.max_quantity.toLocaleString()}.`,'danger');
   const price=(qty/1000)*Number(s.price_per_1000);
+  const isTikTok=String(s.platform).toLowerCase().includes('tiktok') || String(s.platform).includes('تيك');
+  const displayServiceName = isTikTok
+    ? (/like|لايك/i.test(String(s.name)) ? 'TikTok Boost — لايكات' : /follow|متابع/i.test(String(s.name)) ? 'TikTok Boost — متابعين' : /visit|profile|زيارة|بروفايل/i.test(String(s.name)) ? 'TikTok Boost — زيارات البروفايل' : 'TikTok Boost — مشاهدات')
+    : (s.platform+' — '+s.name);
   $('orderBtn').disabled=true;
   try{
-    const {error}=await db.from('orders').insert({user_id:currentUser.id,service_id:s.id,service_name:s.platform+' — '+s.name,link,quantity:qty,price,status:'pending'});
+    const {error}=await db.from('orders').insert({user_id:currentUser.id,service_id:s.id,service_name:displayServiceName,link,quantity:qty,price,status:'pending'});
     if(error)throw error;
     showMsg('orderNotice',`✅ تم تسجيل الطلب بقيمة <b>${money(price)}</b>. الحالة: قيد المراجعة.`,'ok');
     $('link').value='';$('qty').value='';updatePrice();loadOrders();
