@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOOSTI — SMM PANEL</title>
+<style>
+:root{--p:#6425ff;--b:#176cff;--ink:#10143b;--muted:#68708a;--bg:#f7f8ff;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+a{text-decoration:none;color:inherit}.nav{position:sticky;top:0;z-index:10;background:#ffffffdf;backdrop-filter:blur(14px);border-bottom:1px solid #e8e9f5}
+.navin{max-width:1180px;margin:auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-weight:900;font-size:25px;letter-spacing:-1px}.logo span{color:var(--p)}.links{display:flex;gap:22px;font-size:14px;color:#343b62}.btn{border:0;border-radius:14px;padding:12px 18px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,var(--p),var(--b));color:#fff;box-shadow:0 8px 22px #6425ff2b}
+.hero{max-width:1180px;margin:0 auto;padding:70px 22px 45px;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.badge{display:inline-block;padding:8px 13px;border-radius:99px;background:#eee9ff;color:#5b20e8;font-weight:800;font-size:13px}
+h1{font-size:clamp(40px,6vw,70px);line-height:1.02;margin:18px 0 16px;letter-spacing:-3px}h1 span{background:linear-gradient(90deg,var(--p),var(--b));color:transparent;background-clip:text}
+.hero p{font-size:18px;line-height:1.9;color:var(--muted);max-width:650px}.actions{display:flex;gap:12px;margin-top:25px;flex-wrap:wrap}.ghost{padding:12px 18px;border-radius:14px;border:1px solid #dfe2f0;background:#fff;font-weight:800}
+.mock{background:linear-gradient(145deg,#fff,#f0edff);border:1px solid #e2e4f3;border-radius:34px;padding:22px;box-shadow:0 25px 70px #1c1d4015;transform:rotate(1deg)}
+.mocktop{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.dot{width:12px;height:12px;border-radius:50%;background:#25d37b;display:inline-block;margin-left:7px}
+.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{background:#fff;border-radius:20px;padding:18px;border:1px solid #e8e8f3}.stat b{font-size:27px}.stat small{display:block;color:var(--muted);margin-top:6px}
+.phone{margin-top:14px;background:#111746;border-radius:27px;padding:10px;color:#fff}.screen{background:#fff;color:var(--ink);border-radius:20px;padding:17px}.grad{background:linear-gradient(135deg,#6a25ff,#176cff);color:white;border-radius:17px;padding:22px}.grad h3{margin:0 0 8px;font-size:22px}.icons{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:13px}.icon{padding:13px 5px;background:#f5f6fc;border-radius:13px;text-align:center;font-size:12px}
+.section{max-width:1180px;margin:auto;padding:65px 22px}.center{text-align:center}.center h2{font-size:38px;margin:8px 0 10px}.center p{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}.card{background:var(--card);border:1px solid #e8e9f3;border-radius:22px;padding:25px;box-shadow:0 12px 35px #15152b08}.card .ico{width:48px;height:48px;border-radius:15px;background:#eee9ff;color:var(--p);display:grid;place-items:center;font-size:23px}.card h3{margin-bottom:7px}.card p{color:var(--muted);line-height:1.7}
+.cta{background:linear-gradient(135deg,#171b50,#5421d8);color:white;border-radius:30px;padding:45px;text-align:center}.cta p{color:#d9dcff}.footer{padding:30px 22px;text-align:center;color:#777e9b;font-size:13px}
+.dashboard{display:none;max-width:1180px;margin:auto;padding:35px 22px}.dashnav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.pill{padding:10px 15px;border-radius:12px;background:#fff;border:1px solid #e1e4ef;cursor:pointer}.active{background:#ece7ff;color:#5d20e9;border-color:#cfc2ff}.panel{background:#fff;border:1px solid #e6e8f1;border-radius:22px;padding:25px}.form{display:grid;gap:13px;max-width:600px}.form input,.form select{padding:14px;border:1px solid #dfe2ed;border-radius:12px;font-size:15px}.notice{padding:13px;border-radius:12px;background:#f1efff;color:#5421d8}
+@media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:42px}.cards{grid-template-columns:1fr 1fr}.links{display:none}h1{letter-spacing:-2px}.mock{transform:none}}
+@media(max-width:560px){.cards{grid-template-columns:1fr}.section{padding:45px 18px}.hero{padding-left:18px;padding-right:18px}.cta{padding:30px 20px}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="navin">
+  <div class="logo">JB <span>BOOSTI</span></div>
+  <div class="links"><a href="#services">الخدمات</a><a href="#how">كيفاش يخدم؟</a><a href="#payment">الدفع D17</a><a href="#contact">تواصل معنا</a></div>
+  <button class="btn" onclick="showDash()">دخول للوحة</button>
+</div></nav>
+
+<main id="home">
+<section class="hero">
+ <div>
+  <span class="badge">SMM PANEL • سريع • بسيط • آمن</span>
+  <h1>كبّر حضورك<br><span>على السوشيال ميديا</span></h1>
+  <p>منصة BOOSTI تساعدك على إدارة خدمات TikTok وInstagram وFacebook وYouTube من مكان واحد، بواجهة سهلة وسريعة.</p>
+  <div class="actions"><button class="btn" onclick="showDash()">ابدأ الآن مجانًا</button><a class="ghost" href="#services">شوف الخدمات</a></div>
+ </div>
+ <div class="mock">
+  <div class="mocktop"><b>BOOSTI PANEL</b><span><i class="dot"></i>Online</span></div>
+  <div class="statgrid"><div class="stat"><b>+200</b><small>خدمة متوفرة</small></div><div class="stat"><b>+12K</b><small>طلبات معالجة</small></div></div>
+  <div class="phone"><div class="screen"><div class="grad"><h3>Boost your presence</h3><div>أكثر تفاعلًا • أكثر ظهورًا • أكثر نجاحًا</div></div>
+  <div class="icons"><div class="icon">🎵<br>TikTok</div><div class="icon">◎<br>Instagram</div><div class="icon">▶️<br>YouTube</div><div class="icon">f<br>Facebook</div></div></div></div>
+ </div>
+</section>
+
+<section id="services" class="section"><div class="center"><h2>خدماتك في بلاصة وحدة</h2><p>واجهة منظمة باش تلقى الخدمة اللي تحتاجها بسرعة.</p></div>
+<div class="cards">
+ <div class="card"><div class="ico">🎵</div><h3>TikTok</h3><p>خدمات للمشاهدات، الإعجابات والمتابعين مع متابعة حالة الطلب.</p></div>
+ <div class="card"><div class="ico">◎</div><h3>Instagram</h3><p>إدارة طلبات خدمات Instagram من لوحة واحدة وبطريقة سهلة.</p></div>
+ <div class="card"><div class="ico">▶</div><h3>YouTube</h3><p>خدمات للقنوات والفيديوهات مع واجهة واضحة للطلبات.</p></div>
+ <div class="card"><div class="ico">f</div><h3>Facebook</h3><p>خدمات صفحات ومنشورات Facebook مع سجل للطلبات.</p></div>
+ <div class="card"><div class="ico">💬</div><h3>WhatsApp</h3><p>قسم مخصص للخدمات المتاحة حسب الباقات التي تضيفها.</p></div>
+ <div class="card"><div class="ico">➕</div><h3>والمزيد</h3><p>تنجم تزيد منصات وخدمات جديدة من لوحة الإدارة.</p></div>
+</div></section>
+
+<section id="how" class="section"><div class="center"><h2>كيفاش تخدم المنصة؟</h2><p>3 خطوات بسيطة للبدء.</p></div>
+<div class="cards"><div class="card"><div class="ico">1</div><h3>أنشئ حساب</h3><p>سجّل حساب جديد في ثواني.</p></div><div class="card"><div class="ico">2</div><h3>اختار الخدمة</h3><p>اختار المنصة، الخدمة والكمية ثم أدخل الرابط.</p></div><div class="card"><div class="ico">3</div><h3>تابع الطلب</h3><p>شوف حالة الطلب والرصيد من لوحة التحكم.</p></div></div></section>
+
+<section id="contact" class="section"><div class="cta"><h2>جاهز تكبّر حضورك؟</h2><p>ابدأ بتجربة واجهة BOOSTI وخصص الخدمات والأسعار والدفع حسب مشروعك.</p><button class="btn" onclick="showDash()">فتح لوحة التجربة</button></div></section>
+</main>
+
+<section id="dashboard" class="dashboard">
+ <div class="center"><span class="badge">DEMO DASHBOARD</span><h2>لوحة التحكم</h2><p>واجهة تجريبية — البيانات هنا للتوضيح فقط.</p></div>
+ <div class="dashnav"><button class="pill active" onclick="tab('order',this)">طلب جديد</button><button class="pill" onclick="tab('orders',this)">طلباتي</button><button class="pill" onclick="tab('wallet',this)">المحفظة</button><button class="pill" onclick="location.reload()">الرئيسية</button></div>
+ <div id="order" class="panel tab"><div class="form"><div class="notice">الرصيد التجريبي: <b>0.00 د.ت</b></div><select><option>TikTok — اختر الخدمة</option><option>مشاهدات TikTok</option><option>إعجابات TikTok</option><option>متابعين TikTok</option></select><input placeholder="رابط المنشور أو الحساب"><input type="number" placeholder="الكمية"><button class="btn" onclick="alert('هذا نموذج تجريبي. يلزم ربط Backend قبل تنفيذ الطلبات.')">إرسال الطلب</button></div></div>
+ <div id="orders" class="panel tab" style="display:none"><h3>آخر الطلبات</h3><p>ما فماش طلبات في الحساب التجريبي.</p></div>
+ <div id="wallet" class="panel tab" style="display:none"><h3>المحفظة</h3><div class="notice">الرصيد المتاح: <b id="walletBalance">0.000 د.ت</b></div><div style="height:10px"></div><div id="walletPending" class="notice" style="display:none"></div><div style="height:10px"></div><button class="btn" onclick="document.getElementById('payment').scrollIntoView({behavior:'smooth'});">شحن الرصيد عبر D17</button></div>
+</section>
+
+
+<section class="section" id="payment">
+ <div class="center">
+   <span class="badge">شحن الرصيد عبر D17</span>
+   <h2>اشحن رصيدك عبر D17 💳</h2>
+   <p>حوّل المبلغ عبر D17 ثم أرسل بيانات العملية للتحقق منها.</p>
+ </div>
+ <div class="cards" style="align-items:start">
+   <div class="card">
+     <div class="ico">💳</div>
+     <h3>1 — قم بالتحويل</h3>
+     <p>رقم D17 للدفع:</p>
+     <h2 dir="ltr" style="margin:8px 0">25 723 544</h2>
+     <button class="btn" onclick="copyD17()">نسخ رقم D17</button>
+     <p style="margin-top:15px"><small>مهم: تأكد من اسم المستفيد قبل تأكيد التحويل.</small></p>
+   </div>
+   <div class="card">
+     <div class="ico">🧾</div>
+     <h3>2 — أرسل إثبات الدفع</h3>
+     <form class="form" onsubmit="submitDeposit(event)">
+       <input id="depAmount" type="number" min="1" step="0.001" placeholder="المبلغ بالدينار التونسي" required>
+       <input id="depPhone" inputmode="numeric" placeholder="رقم الهاتف" required>
+       <input id="depRef" placeholder="مرجع / رقم العملية D17" required>
+       <input id="depFile" type="file" accept="image/*">
+       <button class="btn" type="submit">إرسال للتحقق</button>
+     </form>
+   </div>
+   <div class="card">
+     <div class="ico">⏳</div>
+     <h3>3 — التحقق</h3>
+     <p>بعد إرسال البيانات، تبقى العملية <b>قيد المراجعة</b>. بعد التأكيد، يتم تحديث الرصيد.</p>
+     <div id="depositStatus" class="notice" style="display:none"></div>
+   </div>
+ </div>
+</section>
+
+
+
+<section class="section" id="admin">
+ <div class="center">
+   <span class="badge">ADMIN DEMO</span>
+   <h2>مراجعة عمليات D17</h2>
+   <p>طلبات الشحن تحفظ على هذا الجهاز للمراجعة التجريبية. التحقق الحقيقي يحتاج Backend وربطًا رسميًا بخدمة الدفع.</p>
+ </div>
+ <div class="panel">
+   <div id="adminEmpty" class="notice">لا توجد عمليات في النسخة الحالية.</div>
+   <div id="adminRows"></div>
+ </div>
+</section>
+<footer class="footer">© 2026 BOOSTI — SMM PANEL</footer>
+<script>
+const D17_NUMBER='25 723 544';
+const STORAGE_KEY='boosti_d17_transactions_v2';
+function getTransactions(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch(e){return []}}
+function saveTransactions(x){localStorage.setItem(STORAGE_KEY,JSON.stringify(x))}
+function showDash(){document.getElementById('home').style.display='none';document.getElementById('dashboard').style.display='block';window.scrollTo({top:0,behavior:'smooth'});refreshDashboard()}
+function tab(id,btn){document.querySelectorAll('.tab').forEach(x=>x.style.display='none');document.getElementById(id).style.display='block';document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));btn.classList.add('active');refreshDashboard()}
+async function copyD17(){try{await navigator.clipboard.writeText(D17_NUMBER)}catch(e){} alert('تم نسخ رقم D17: '+D17_NUMBER)}
+function makeId(){return 'BST-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function submitDeposit(e){
+ e.preventDefault();
+ const amount=Number(document.getElementById('depAmount').value);
+ const phone=document.getElementById('depPhone').value.trim();
+ const ref=document.getElementById('depRef').value.trim();
+ const file=document.getElementById('depFile').files[0];
+ if(!amount || amount<=0 || !phone || !ref){alert('كمّل البيانات المطلوبة.');return}
+ if(file && !file.type.startsWith('image/')){alert('الرجاء اختيار صورة لوصل الدفع.');return}
+ const tx={id:makeId(),amount,phone,ref,fileName:file?file.name:'',status:'قيد المراجعة',createdAt:new Date().toLocaleString('ar-TN')};
+ const list=getTransactions(); list.unshift(tx); saveTransactions(list);
+ const status=document.getElementById('depositStatus'); status.style.display='block';
+ status.innerHTML='✅ تم تسجيل طلب الشحن.<br>رقم العملية داخل Boosti: <b dir="ltr">'+tx.id+'</b><br>الحالة: <b>قيد المراجعة</b>.';
+ e.target.reset(); refreshAdmin(); refreshDashboard();
+}
+function refreshAdmin(){
+ const list=getTransactions(), empty=document.getElementById('adminEmpty'), rows=document.getElementById('adminRows');
+ if(!rows)return; if(!list.length){empty.style.display='block';rows.innerHTML='';return} empty.style.display='none';
+ rows.innerHTML=list.map(tx=>`<div class="card" style="margin-top:12px"><b>عملية D17 — ${escapeHtml(tx.id)}</b><br>المبلغ: ${escapeHtml(tx.amount)} د.ت<br>الهاتف: ${escapeHtml(tx.phone)}<br>مرجع D17: ${escapeHtml(tx.ref)}<br>الوصل: ${escapeHtml(tx.fileName||'لم يتم إرفاق صورة')}<br>التاريخ: ${escapeHtml(tx.createdAt)}<br><span class="state notice" style="display:inline-block;margin-top:10px">${escapeHtml(tx.status)}</span></div>`).join('')
+}
+function refreshDashboard(){
+ refreshAdmin();
+ const list=getTransactions(), pending=list.filter(x=>x.status==='قيد المراجعة');
+ const p=document.getElementById('walletPending'), b=document.getElementById('walletBalance');
+ if(p){p.style.display=pending.length?'block':'none';if(pending.length)p.innerHTML='⏳ عندك <b>'+pending.length+'</b> عملية شحن قيد المراجعة. إجماليها <b>'+pending.reduce((a,x)=>a+Number(x.amount),0).toFixed(3)+' د.ت</b>.'}
+ if(b)b.textContent='0.000 د.ت';
+ const orders=document.getElementById('orders'); if(orders) orders.innerHTML='<h3>آخر الطلبات</h3><p>طلبات الخدمات تظهر هنا بعد ربط Backend.</p>';
+}
+window.addEventListener('DOMContentLoaded',()=>{refreshAdmin();refreshDashboard()});
+</script>
+</body></html>
