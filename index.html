@@ -142,7 +142,7 @@ body{background:radial-gradient(circle at 15% 5%,rgba(139,92,246,.20),transparen
         <select id="service"></select>
         <div class="servicehint" id="serviceHint">اختار الخدمة باش تظهرلك السعر.</div>
         <input id="link" placeholder="رابط المنشور أو الحساب">
-        <input id="qty" type="number" min="100" placeholder="الكمية" oninput="updatePrice()">
+        <input id="qty" type="number" min="100" placeholder="عدد المشاهدات / اللايكات / المتابعين" oninput="updatePrice()">
         <div class="pricebox"><span>السعر التقريبي</span><span class="price" id="orderPrice">0.000 د.ت</span></div>
         <button class="btn" id="orderBtn" onclick="submitOrder()">إرسال الطلب</button>
       </div>
@@ -276,7 +276,9 @@ function updatePrice(){
   const s=selectedService(),q=Number($('qty').value||0);
   if(!s){$('orderPrice').textContent='0.000 د.ت';$('serviceHint').textContent='ما فماش خدمات متاحة.';return}
   $('qty').min=s.min_quantity;$('qty').max=s.max_quantity;
-  $('serviceHint').textContent=`الحد الأدنى: ${s.min_quantity.toLocaleString()} — الحد الأقصى: ${s.max_quantity.toLocaleString()}`;
+  const metric = /like|لايك/i.test(String(s.name)) ? 'اللايكات' : /follow|متابع/i.test(String(s.name)) ? 'المتابعين' : /comment|تعليق/i.test(String(s.name)) ? 'التعليقات' : 'المشاهدات';
+  $('qty').placeholder=`عدد ${metric} المطلوب`;
+  $('serviceHint').textContent=`عدد ${metric} المطلوب — من ${s.min_quantity.toLocaleString()} إلى ${s.max_quantity.toLocaleString()}`;
   $('orderPrice').textContent=money(q>0?(q/1000)*Number(s.price_per_1000):0);
 }
 $('service').addEventListener('change',updatePrice);
